@@ -334,3 +334,52 @@ Dan hebben we dus een blok waarvan 7/8 characters bekend zijn, en er nog ~(10+26
 `[........][........][..::123?]`
 etc etc
 Zo gaat het van $B\times(10+26+26+3)^8\approx10^{14} B$ naar $8B\times(10+26+26+3)=520B$, met $B$ het aantal blokken in de key.
+
+### recover_key.py
+
+Qwen heeft het script recover_key.py gemaakt, die zou de blok-strategie moeten implementeren.
+
+>pip install requests
+
+Optioneel als PHP CLI niet beschikbaar is:
+> pip install passlib
+
+>python3 recover_key.py --base http://10.114.131.3
+
+Specifieke PHP:
+> python3 recover_key.py --php-bin /usr/bin/php
+
+Custom characterset:
+> python3 recover_key.py --charset "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_{}-./%+=:;~!@#$^&*()[]|<>,?"
+
+Progress staat op stderr.
+- De gevonden key komt op stdout.
+- Het script doet zelf een self-test tegen jouw voorbeeld uit de notes:
+`crypt("guest:Mo", "MA") == MAQ55hx59Xoc6`
+- Het decodeert %2F terug naar /, zoals in je notes nodig was.
+- Het probeert per karakter eerst je standaard charset, daarna brede printable ASCII als fallback.
+
+```log
+$ python3 recover_key.py --base http://10.112.139.223
+[+] Backend: PHP CLI (/usr/bin/php)
+[+] Self-test OK.
+[+] pos=  0 ua_len= 16 blok= 2 char='T'
+[+] pos=  1 ua_len= 23 blok= 3 char='H'
+[+] pos=  2 ua_len= 22 blok= 3 char='M'
+*
+[+] pos=142 ua_len= 18 blok=20 char='f'
+[+] pos=143 ua_len= 17 blok=20 char='d'
+[+] pos=144 ua_len= 16 blok=20 char='2'
+[+] pos=145 ua_len= 23 blok=21 char='1'
+[+] pos=146 ua_len= 22 blok=21 char='4'
+[+] pos=147 ua_len= 21 blok=21 char='0'
+[+] pos=148 ua_len= 20 blok=21 char='5'
+[+] pos=149 ua_len= 19 blok=21 char='2'
+[+] pos=150 ua_len= 18 blok=21 char='5'
+[+] pos=151 ua_len= 17 blok=21 char='b'
+[+] pos=152 ua_len= 16 blok=21 char='9'
+[+] pos=153 ua_len= 23 blok=22 char='}'
+[*] Geen match in --charset; probeer brede printable-ASCII charset...
+[*] Stop bij pos 154: geen kandidaat matched.
+THM{Traditional_Own_Crypto_is_Always_Surprising!_and_this_hopefully_is_not_easy_to_crack_e41d20b5b0989cac65ed4a090cace944bf30e6d3ab88f9d447f52fd2140525b9}
+```
