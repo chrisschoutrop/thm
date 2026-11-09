@@ -1,6 +1,6 @@
 # Crypto Failures
 ## Implementing your own military-grade encryption is usually not the best idea.
-Difficulty: Medium
+Difficulty: Medium<br>
 URL: https://tryhackme.com/room/cryptofailures
 
 ### Info given
@@ -209,7 +209,7 @@ MANmz1hp3QddE
 MA8yhKYOvo0Kk
 MAiiFr9J6yXrE
 ```
-Begint allemaal met "MA", dat is dus de salt. Hier is ook te zien dat het lijkt alsof sommige stuken langer zijn, ik weet nog niet waarom.
+Begint allemaal met "MA", dat is dus de salt. Hier is ook te zien dat het lijkt alsof sommige stuken langer zijn, ik weet nog niet waarom (de %2F stond erin).
 
 Dus we hebben nodig aan script:
 ```
@@ -326,11 +326,11 @@ Idee van script:
 Stel secret key is 123456789 deze zit helemaal in eigen blok:
 `[........][........][......::]123456789`
 
-Laatste blok ene kleiner maken 
-`[........][........][.....::?]`
-Dan hebben we dus een blok waarvan 7/8 characters bekend zijn, en er nog ~(10+26+26+3) attempts nodig zijn.
-`[........][........][....::1?]`
-`[........][........][...::12?]`
-`[........][........][..::123?]`
+Laatste blok ene kleiner maken <br>
+`[........][........][.....::?]`<br>
+Dan hebben we dus een blok waarvan 7/8 characters bekend zijn, en er nog ~(10+26+26+3) attempts nodig zijn.<br>
+`[........][........][....::1?]`<br>
+`[........][........][...::12?]`<br>
+`[........][........][..::123?]`<br>
 etc etc
 Zo gaat het van $B\times(10+26+26+3)^8\approx10^{14} B$ naar $8B\times(10+26+26+3)=520B$, met $B$ het aantal blokken in de key.
