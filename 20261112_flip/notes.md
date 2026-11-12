@@ -301,7 +301,7 @@ Ongeldig voorbeeld:
 - - IV en key zijn random en niet gerecycled, want de server stopt bij een foute poging
 - - Gegeven een enkele output van een encryption oracle moeten we een message opstellen wat decrypt naar iets met `admin&password=sUp3rPaSs1` erin?
 
-### Ideeen
+### Ideeën
 - Stel ipv AES hebben we iets wat gewoon 1:1 input terug geeft.
 - - Dan is het triviaal want "ciphertext" is dan gewoon de message die we willen hebben als plaintext
 - Ik denk ergens niet dat we met 1 encryption de key en iv kunnen krijgen in het algemeen
@@ -321,6 +321,11 @@ chosen-plaintext attacks means that even in this case the attacker cannot
 tell which of these two messages was encrypted with probability significantly
 better than random guessing. "
 - - Dus er moet iets anders aan de hand zijn, en ik vermoed dat het met die padding te doen heeft somehow.
+- Dingen concatenaten is tricky, want CBC propagate van begin tot einde, we kunnen niet blokken omdraaien zonder dat dat alle volgende blokken kapot maakt.
+![alt text](Screenshot_20261112_220747.png "Title")
+- 'admin&password=sUp3rPaSs1' moet ergens in de output staan, maakt niet uit waar. 
+- We weten wel de "IV" als we blokken achteraan willen plakken, want dat is het laatste ciphertext blok bij CBC.
 
-
+--> Even pauze nemen
 --> Goed het boek lezen sectie 3.7.2.
+--> Check als password langer is dat dan ook leaked ciphertext langer is
